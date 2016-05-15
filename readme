@@ -1,0 +1,5 @@
+Simple RPC implementation
+Runs fine writing services beware
+Points to be noted:
+1. Write Services using Wrapper classes Java Types (Use Integer instead of int).
+2. Use Map as arguments to methods instead of passing a class (Schema can share the information of fields required to pass) at Service.   Using a map is an issue need to be seen.
