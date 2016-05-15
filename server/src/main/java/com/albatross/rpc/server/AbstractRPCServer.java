@@ -3,13 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.albatross.server;
+package com.albatross.rpc.server;
 
-import com.albatross.protocol.conn.Connectable;
-import com.albatross.protocol.Message;
-import com.albatross.protocol.Method;
-import com.albatross.protocol.Schema;
-import com.albatross.protocol.excption.RPCException;
+import com.albatross.rpc.protocol.conn.Connectable;
+import com.albatross.rpc.protocol.Message;
+import com.albatross.rpc.protocol.Method;
+import com.albatross.rpc.protocol.Schema;
+import com.albatross.rpc.protocol.excption.RPCException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.ArrayList;

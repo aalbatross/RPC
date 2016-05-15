@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.albatross.protocol.excption;
+package com.albatross.rpc.protocol.excption;
 
-import com.albatross.protocol.Message;
+import com.albatross.rpc.protocol.Message;
 
 /**
  *

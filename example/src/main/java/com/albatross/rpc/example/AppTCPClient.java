@@ -1,6 +1,6 @@
 package com.albatross.rpc.example;
 
-import com.albatross.client.TCPRPCClient;
+import com.albatross.rpc.client.TCPRPCClient;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import java.io.IOException;
 

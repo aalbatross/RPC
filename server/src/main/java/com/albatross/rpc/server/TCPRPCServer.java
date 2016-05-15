@@ -3,10 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.albatross.server;
+package com.albatross.rpc.server;
 
-import com.albatross.protocol.Message;
-import com.albatross.protocol.Schema;
+import com.albatross.rpc.protocol.Message;
+import com.albatross.rpc.protocol.Schema;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;

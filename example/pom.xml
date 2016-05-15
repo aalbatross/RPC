@@ -8,24 +8,24 @@
         <version>1.0-SNAPSHOT</version>
     </parent>
     <groupId>com.albatross</groupId>
-    <artifactId>example</artifactId>
+    <artifactId>rpc-example</artifactId>
     <version>1.0-SNAPSHOT</version>
     <name>example</name>
     <url>http://maven.apache.org</url>
     <dependencies>
         <dependency>
             <groupId>com.albatross</groupId>
-            <artifactId>protocol</artifactId>
+            <artifactId>rpc-protocol</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.albatross</groupId>
-            <artifactId>server</artifactId>
+            <artifactId>rpc-server</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>com.albatross</groupId>
-            <artifactId>client</artifactId>
+            <artifactId>rpc-client</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
         <dependency>

@@ -5,7 +5,7 @@
  */
 package com.albatross.rpc.example;
 
-import com.albatross.protocol.excption.RPCException;
+import com.albatross.rpc.protocol.excption.RPCException;
 
 /**
  *
