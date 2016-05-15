@@ -22,6 +22,7 @@ public class ProtocolDataTypeMap {
     public static String javaToProtoDataType(Class clazz){
         String jdt = clazz.getCanonicalName();
         String result = jdt;
+        
         if(jdt.equalsIgnoreCase(Integer.class.getCanonicalName()))
             return PROTO_INTEGER;
         else if(jdt.equalsIgnoreCase(Long.class.getCanonicalName()))

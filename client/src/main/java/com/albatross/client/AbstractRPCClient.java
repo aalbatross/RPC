@@ -66,7 +66,7 @@ public abstract class AbstractRPCClient implements Connectable {
         }
         
         Schema sc = this.lookupSchemaMap.get(lookup);
-        Message mreq = new Message(UUID.randomUUID().toString(), "hello", sc.getServicename(), Message.MSG_REQ, "printHello", new Object[]{"Hello World!!"}, null, new String[]{});
+        Message mreq = new Message(UUID.randomUUID().toString(), lookup, sc.getServicename(), Message.MSG_REQ, "printHello", new Object[]{"Hello World!!"}, null, new String[]{});
 
         Method[] methods = sc.getMethods();
         Method call = null;
@@ -81,10 +81,10 @@ public abstract class AbstractRPCClient implements Connectable {
             throw new RuntimeException(RPCException.METHOD_NOT_FOUND);
         }
         String[] strs = call.getArgs();
-        if (strs.length != args.length) {
+        /*if (strs.length != args.length) {
             throw new RuntimeException(RPCException.ARG_NOT_MATCH_WITH_METHOD);
-        }
-        for (int i = 0; i < strs.length; i++) {
+        }*/
+        /*for (int i = 0; i < strs.length; i++) {
             System.out.println(strs[i]+"-"+args[i].getClass().getName());
             if ((strs[i]).equals(ProtocolDataTypeMap.javaToProtoDataType(args[i].getClass()))) {
                 continue;
@@ -92,7 +92,7 @@ public abstract class AbstractRPCClient implements Connectable {
                 
                 throw new RuntimeException(RPCException.ARG_NOT_MATCH_WITH_METHOD);
             }
-        }
+        }*/
         mreq.setArgs(args);
         Message response = this.executeRequest(mreq);
         if (response.getExceptions().length > 0) {

@@ -3,7 +3,6 @@ package com.albatross.server;
 import com.albatross.protocol.JsonUtils;
 import com.albatross.protocol.Message;
 import com.albatross.protocol.Schema;
-import com.albatross.server.HelloService.Sample;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.UUID;
@@ -59,7 +58,7 @@ public class AppTest {
         //System.out.println(HelloService.class.isInterface());
         Schema sc = JsonUtils.generateProtocolFromInterface(HelloService.class);
 
-        Message mreq = new Message(UUID.randomUUID().toString(), "hello", sc.getServicename(), Message.MSG_REQ, "saySample", new Object[]{}, null, new String[]{});
+        Message mreq = new Message(UUID.randomUUID().toString(), "hello", sc.getServicename(), Message.MSG_REQ, "saySample", new Object[]{new HelloService.Sample(23, "samdas")}, null, new String[]{});
         ObjectMapper mapper = new ObjectMapper();
         ZMQ.Context context = ZMQ.context(1);
 

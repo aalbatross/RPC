@@ -59,8 +59,7 @@ public class TCPRPCServer extends AbstractRPCServer {
             Message req= mapper.readValue(request,Message.class);
             return req;
         } catch (IOException ex) {
-           ex.printStackTrace();
-           throw new RuntimeException("Error while sending:"+ex);
+           throw new RuntimeException("Error while receiving:"+ex);
         }
         
     }

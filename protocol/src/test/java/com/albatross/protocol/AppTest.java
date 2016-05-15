@@ -19,6 +19,7 @@ public class AppTest
     @org.testng.annotations.Test
     public void testApp() throws IOException
     {
+        
        Schema result= JsonUtils.generateProtocolFromInterface(HelloService.class);
        System.out.println(result);
         //JsonUtils.generateJavaClassesFromProtocol(result,new File("/home/iamrp/test"));

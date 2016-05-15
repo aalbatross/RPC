@@ -10,9 +10,13 @@ import com.albatross.protocol.Message;
 import com.albatross.protocol.Method;
 import com.albatross.protocol.Schema;
 import com.albatross.protocol.excption.RPCException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -67,7 +71,7 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
         return req;
     }
 
-    private Message getExecuteResponseImpl(Message req) {
+    private Message getExecuteResponseImpl(Message req) throws IOException, ClassNotFoundException {
         String lookup = req.getLookupName();
         String serviceName = req.getServiceName();
         req.setType(Message.MSG_RES);
@@ -85,6 +89,17 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
             if (method.getName().equals(req.getMethodname())) {
                 Object[] objs = req.getArgs();
                 String[] strs = method.getArgs();
+                for(int i=0;i<objs.length;i++){
+                    if(objs[i].getClass().getName().equals(LinkedHashMap.class.getName()))
+                    {
+                        if(!strs[i].equals(LinkedHashMap.class.getName())){
+                            ObjectMapper mapper = new ObjectMapper();
+                            String[] split=strs[i].split("\\.");
+                            System.out.println(strs[i]+" split length: "+split.length);
+                            objs[i]=mapper.readValue(mapper.writeValueAsString(objs[i]), Class.forName(strs[i].replace("."+split[split.length-1], "$"+split[split.length-1])));
+                        }
+                    }
+                }
                 ArrayList<Class> classes = new ArrayList<Class>();
                 for (Object obj : objs) {
                     classes.add(obj.getClass());
@@ -123,7 +138,7 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
 
     }
 
-    public Message processRequest(Message req) {
+    public Message processRequest(Message req) throws IOException, ClassNotFoundException {
         if (!req.getType().equals(Message.MSG_REQ)) {
             req.setType(Message.MSG_RES);
             req.setExceptions(new String[]{RPCException.MESSAGE_MUST_BE_REQ});
@@ -147,10 +162,14 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
     @Override
     public void run() {
         while (!Thread.currentThread().isInterrupted())
-            process();
+            try {
+                process();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
     }
 
-    private void process() {
+    private void process() throws IOException, ClassNotFoundException {
         Message req = this.recv();
         Message res = this.processRequest(req);
         this.send(res);

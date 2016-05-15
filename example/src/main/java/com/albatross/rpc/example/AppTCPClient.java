@@ -16,7 +16,8 @@ public class AppTCPClient
         client.bind("tcp://localhost:5555");
         client.getAllServices();
         //System.out.println(client.getLookupSchemaMap());
-        client.call("hello", "switchOnTV", new Object[]{8});
-        
+        client.call("home", "switchOnTV", new Object[]{8});
+        client.call("hello", "saySample", new Object[]{});
+        client.call("hello", "saySample", new Object[]{new HelloService.Sample(33, "asasdsda")});
     }
 }

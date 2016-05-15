@@ -20,11 +20,11 @@ public class HelloServer implements HelloService {
     }
 
     public Sample saySample() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new Sample(25,"sasma");
     }
 
     public TSample saySample(Sample s) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new TSample(12,s);
     }
     
 }

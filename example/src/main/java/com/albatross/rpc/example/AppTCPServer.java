@@ -16,10 +16,12 @@ import java.io.IOException;
  */
 public class AppTCPServer {
     public static void main(String[] args) throws IOException{
-        Schema sc=JsonUtils.generateProtocolFromInterface(HomeService.class);
+        Schema sc1=JsonUtils.generateProtocolFromInterface(HomeService.class);
+        Schema sc2=JsonUtils.generateProtocolFromInterface(HelloService.class);
         TCPRPCServer server = new TCPRPCServer();
         server.bind("tcp://localhost:5555");
-        server.bindObject("hello", new HomeServer(50,10), sc);
+        server.bindObject("home", new HomeServer(50,10), sc1);
+        server.bindObject("hello", new HelloServer(), sc2);
         server.start();
     }
 }

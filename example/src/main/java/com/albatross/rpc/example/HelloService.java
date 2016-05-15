@@ -14,11 +14,62 @@ public interface HelloService {
     class Sample{
         int value;
         String name;
+
+        public Sample(){
+            
+        }
+        
+        public Sample(int v,String n){
+            this.value =v;
+            this.name = n;
+        }
+        
+        public int getValue() {
+            return value;
+        }
+
+        public void setValue(int value) {
+            this.value = value;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public void setName(String name) {
+            this.name = name;
+        }
+        
+        
     }
     
     class TSample{
         int id;
         Sample smp;
+
+        public TSample(int id, Sample smp) {
+            this.id = id;
+            this.smp = smp;
+        }
+        
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public Sample getSmp() {
+            return smp;
+        }
+
+        public void setSmp(Sample smp) {
+            this.smp = smp;
+        }
+        
+        
+        
     }
     
     public void printHello(String name);
