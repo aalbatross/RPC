@@ -16,57 +16,71 @@ import org.zeromq.ZMQ;
 
 /**
  *
- * @author iamrp
- * TCPRPCServer implementation
+ * @author iamrp TCPRPCServer implementation
  */
 public class TCPRPCServer extends AbstractRPCServer {
 
     ZMQ.Socket socket;
     ZMQ.Context ctx;
-    
-    public TCPRPCServer(){
+
+    private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(AbstractRPCServer.class);
+
+    public TCPRPCServer() {
         super();
-        this.ctx= ZMQ.context(1);
+        this.ctx = ZMQ.context(1);
         this.socket = ctx.socket(ZMQ.REP);
-    }
-    
-    public TCPRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups) {
-        super(objectLookup, lookupSchemaMap, lookups);
-        this.ctx= ZMQ.context(1);
-        this.socket = ctx.socket(ZMQ.REP);
+        if (logger.isInfoEnabled()) {
+            logger.info("TCPRPC Server started");
+        }
     }
 
-    public void bind(String connectionURL) {
+    public TCPRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups) {
+        super(objectLookup, lookupSchemaMap, lookups);
+        this.ctx = ZMQ.context(1);
+        this.socket = ctx.socket(ZMQ.REP);
+        if (logger.isInfoEnabled()) {
+            logger.info("TCPRPC Server started");
+        }
+    }
+
+    public final void bind(String connectionURL) {
         this.socket.bind(connectionURL);
     }
 
-    public void send(Message m) {
+    protected final void send(Message m) {
         try {
             ObjectMapper mapper = new ObjectMapper();
-            String response= mapper.writeValueAsString(m);
-                        System.out.println("Response sent: "+response);
+            String response = mapper.writeValueAsString(m);
+            if (logger.isInfoEnabled()) {
+                logger.info("Response sent: " + response);
+            }
             this.socket.send(response);
         } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getCause());
+            throw new RuntimeException("Error while sending:" + ex);
         }
     }
 
-    public Message recv() {
+    protected final Message recv() {
         try {
-            String request= this.socket.recvStr();
-            System.out.println("Requst received: "+request);
+            String request = this.socket.recvStr();
+            if (logger.isInfoEnabled()) {
+                logger.info("Request received: " + request);
+            }
+
             ObjectMapper mapper = new ObjectMapper();
-            Message req= mapper.readValue(request,Message.class);
+            Message req = mapper.readValue(request, Message.class);
             return req;
         } catch (IOException ex) {
-           throw new RuntimeException("Error while receiving:"+ex);
+            logger.error(ex.getCause().getMessage());
+            throw new RuntimeException("Error while receiving:" + ex);
         }
-        
+
     }
 
-    public void close() {
+    protected final void close() {
         this.socket.close();
         this.ctx.term();
     }
-    
+
 }

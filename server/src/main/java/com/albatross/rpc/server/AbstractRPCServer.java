@@ -15,36 +15,46 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.TreeSet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import org.apache.log4j.Logger;
 
 /**
  *
  * @author iamrp
  * abstract RPC Server implementation
  */
-public abstract class AbstractRPCServer extends Thread implements Connectable {
+public abstract class AbstractRPCServer extends Connectable {
 
     private LinkedHashMap<String, Object> objectLookup;
     private LinkedHashMap<String, Schema> lookupSchemaMap;
     private TreeSet<String> lookups;
 
+    private static final Logger logger = Logger.getLogger(AbstractRPCServer.class);
+    
     public AbstractRPCServer() {
         objectLookup = new LinkedHashMap<String, Object>();
         lookupSchemaMap = new LinkedHashMap<String,Schema>();
         lookups = new TreeSet<String>();
+        if(logger.isInfoEnabled()){
+            logger.info("Abstract RPC Server started...");
+        }
     }
 
     public AbstractRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups) {
         this.objectLookup = objectLookup;
         this.lookupSchemaMap = lookupSchemaMap;
         this.lookups = lookups;
+        if(logger.isInfoEnabled()){
+            logger.info("Abstract RPC Server started...");
+        }
     }
 
     private void bindObjectImpl(String lookup, Object obj, Schema schema) {
         objectLookup.put(lookup, obj);
         lookupSchemaMap.put(lookup, schema);
         lookups.add(lookup);
+        if(logger.isInfoEnabled()){
+            logger.info(obj+" providing services"+ schema.getServicename() +" bound with the "+lookup+" name");
+        }
     }
 
     public void bindObject(String lookup, Object obj, Schema schema) {
@@ -72,6 +82,8 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
     }
 
     private Message getExecuteResponseImpl(Message req) throws IOException, ClassNotFoundException {
+        if(logger.isInfoEnabled())
+            logger.info("Exexcuting from lookup "+req.getLookupName()+" of type Service"+ req.getServiceName()+" method "+ req.getMethodname());
         String lookup = req.getLookupName();
         String serviceName = req.getServiceName();
         req.setType(Message.MSG_RES);
@@ -79,6 +91,7 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
 
         Schema schema = lookupSchemaMap.get(lookup);
         if (!schema.getServicename().equals(serviceName)) {
+            logger.error(RPCException.SERVICE_NAME_DONOT_MATCH);
             exceptions.add(RPCException.SERVICE_NAME_DONOT_MATCH);
             req.setExceptions(exceptions.toArray(new String[exceptions.size()]));
             return req;
@@ -95,7 +108,8 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
                         if(!strs[i].equals(LinkedHashMap.class.getName())){
                             ObjectMapper mapper = new ObjectMapper();
                             String[] split=strs[i].split("\\.");
-                            System.out.println(strs[i]+" split length: "+split.length);
+                            if(logger.isDebugEnabled())
+                                logger.debug(strs[i]+" split length: "+split.length);
                             objs[i]=mapper.readValue(mapper.writeValueAsString(objs[i]), Class.forName(strs[i].replace("."+split[split.length-1], "$"+split[split.length-1])));
                         }
                     }
@@ -119,7 +133,7 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
                         break;
                     }
                 } catch (Exception ex) {
-                    
+                    logger.error(ex.getCause().getMessage());
                     exceptions.add(ex.getCause().getMessage());
                     req.setExceptions(exceptions.toArray(new String[exceptions.size()]));
                     
@@ -130,10 +144,12 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
 
         }
         if (req.getResponse() == null) {
+            logger.error(RPCException.METHOD_NOT_FOUND);
             exceptions.add(RPCException.METHOD_NOT_FOUND);
             req.setExceptions(exceptions.toArray(new String[exceptions.size()]));
             return req;
         }
+        logger.debug("Successfully executed");
         return req;
 
     }
@@ -159,13 +175,14 @@ public abstract class AbstractRPCServer extends Thread implements Connectable {
         bindObjectImpl(lookup, obj, schema);
     }
 
-    @Override
-    public void run() {
+    
+    public void startServer() {
         while (!Thread.currentThread().isInterrupted())
             try {
                 process();
             } catch (Exception ex) {
-                ex.printStackTrace();
+                logger.error(ex.getCause());
+                System.err.println(ex.getMessage());
             }
     }
 

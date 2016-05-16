@@ -6,15 +6,9 @@
 package com.albatross.rpc.client;
 
 import com.albatross.rpc.protocol.Message;
-import com.albatross.rpc.protocol.Method;
-import com.albatross.rpc.protocol.Schema;
-import com.albatross.rpc.protocol.excption.RPCException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.UUID;
 import org.zeromq.ZMQ;
 
 /**
@@ -44,7 +38,7 @@ public class TCPRPCClient extends AbstractRPCClient {
             System.out.println("Request sent: " + response);
             this.socket.send(response);
         } catch (JsonProcessingException ex) {
-            ex.printStackTrace();
+            throw new RuntimeException(ex.getCause());
         }
     }
 
@@ -56,7 +50,7 @@ public class TCPRPCClient extends AbstractRPCClient {
             Message req = mapper.readValue(request, Message.class);
             return req;
         } catch (IOException ex) {
-            ex.printStackTrace();
+            
             throw new RuntimeException("Error while sending:" + ex);
         }
 

@@ -29,7 +29,7 @@ public class AppServer {
         server.bindObject("hello", new HelloServer(),sc );
         //Message processRequest = server.processRequest(mreq);
         //System.out.println(mapper.writeValueAsString(processRequest));
-        server.start();
+        server.startServer();
     }
     
 }

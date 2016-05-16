@@ -7,17 +7,13 @@ package com.albatross.rpc.client;
 
 import com.albatross.rpc.protocol.Message;
 import com.albatross.rpc.protocol.Method;
-import com.albatross.rpc.protocol.ProtocolDataTypeMap;
 import com.albatross.rpc.protocol.Schema;
 import com.albatross.rpc.protocol.conn.Connectable;
 import com.albatross.rpc.protocol.excption.RPCException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.Iterator;
 import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 import java.util.UUID;
 
@@ -25,7 +21,7 @@ import java.util.UUID;
  *
  * @author iamrp
  */
-public abstract class AbstractRPCClient implements Connectable {
+public abstract class AbstractRPCClient extends Connectable {
 
     private LinkedHashMap<String, Schema> lookupSchemaMap;
     private ObjectMapper mapper;
@@ -50,7 +46,7 @@ public abstract class AbstractRPCClient implements Connectable {
                 String k1 = (String)key;
                 String json = mapper.writeValueAsString(map.get(key));
                 Schema v1 = mapper.readValue(json, Schema.class);
-                System.out.println(v1);
+                
                 this.lookupSchemaMap.put(k1, v1);
             }
         }   

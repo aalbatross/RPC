@@ -7,13 +7,37 @@ package com.albatross.rpc.protocol;
 
 /**
  *
- * @author iamrp
+ * @author iamrp 
  * Dependent class for Service
  */
-public class Dependencies {
-  private String namespace;
-  private String name;
-  private String[] fields;
+public class Dependency {
+    /**
+     * namespace or package of Service 
+     */
+    private String namespace;
+    /**
+     * name of Service
+     */
+    private String name;
+    /**
+     * encapsulated fields
+     */
+    private String[] fields;
+    
+    public Dependency() {
+
+    }
+    /**
+     *  instantiates Dependency of a Service
+     * @param namespace
+     * @param name
+     * @param fields 
+     */
+    public Dependency(String namespace, String name, String[] fields) {
+        this.namespace = namespace;
+        this.name = name;
+        this.fields = fields;
+    }
 
     public String getNamespace() {
         return namespace;
@@ -38,5 +62,5 @@ public class Dependencies {
     public void setFields(String[] fields) {
         this.fields = fields;
     }
-  
+
 }

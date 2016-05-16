@@ -7,14 +7,14 @@ package com.albatross.rpc.protocol;
 
 /**
  *
- * @author iamrp
+ * @author iamrp 
  * Request and Response Message Envelope
  */
 public class Message {
 
-    public static final String MSG_REQ="REQ";
-    public static final String MSG_RES="RES";
-    
+    public static final String MSG_REQ = "REQ";
+    public static final String MSG_RES = "RES";
+
     private String msgId;
     private String lookupName;
     private String serviceName;
@@ -24,11 +24,11 @@ public class Message {
     private Object response;
     private String[] exceptions;
 
-    public Message(){
-        
+    public Message() {
+
     }
-    
-    public Message(String msgId,String lookup,String serviceName, String type, String methodname, Object[] args, Object response, String[] exceptions) {
+
+    public Message(String msgId, String lookup, String serviceName, String type, String methodname, Object[] args, Object response, String[] exceptions) {
         this.msgId = msgId;
         this.type = type;
         this.lookupName = lookup;
@@ -39,6 +39,11 @@ public class Message {
         this.exceptions = exceptions;
     }
 
+    /**
+     * get associated lookup name for the Object bound in server
+     *
+     * @return
+     */
     public String getLookupName() {
         return lookupName;
     }
@@ -47,6 +52,11 @@ public class Message {
         this.lookupName = lookupName;
     }
 
+    /**
+     * return Service name for message request/response
+     *
+     * @return
+     */
     public String getServiceName() {
         return serviceName;
     }
@@ -55,8 +65,11 @@ public class Message {
         this.serviceName = serviceName;
     }
 
-    
-    
+    /**
+     * unique identifier for message
+     *
+     * @return
+     */
     public String getMsgId() {
         return msgId;
     }
@@ -65,6 +78,11 @@ public class Message {
         this.msgId = msgId;
     }
 
+    /**
+     * get type of message Request/Response
+     *
+     * @return
+     */
     public String getType() {
         return type;
     }
@@ -73,6 +91,11 @@ public class Message {
         this.type = type;
     }
 
+    /**
+     * get MethodName to be called from the Service
+     *
+     * @return
+     */
     public String getMethodname() {
         return methodname;
     }
@@ -81,6 +104,11 @@ public class Message {
         this.methodname = methodname;
     }
 
+    /**
+     * get arguments to call the assigned method name
+     *
+     * @return
+     */
     public Object[] getArgs() {
         return args;
     }
@@ -89,6 +117,11 @@ public class Message {
         this.args = args;
     }
 
+    /**
+     * gets response from targeted RPCServer
+     *
+     * @return
+     */
     public Object getResponse() {
         return response;
     }
@@ -97,6 +130,11 @@ public class Message {
         this.response = response;
     }
 
+    /**
+     * get Exceptions in execution of the remote method
+     *
+     * @return
+     */
     public String[] getExceptions() {
         return exceptions;
     }
@@ -104,7 +142,5 @@ public class Message {
     public void setExceptions(String[] exceptions) {
         this.exceptions = exceptions;
     }
-    
-    
-    
+
 }

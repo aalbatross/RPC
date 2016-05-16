@@ -10,11 +10,26 @@ import com.albatross.rpc.protocol.Message;
 /**
  *
  * @author iamrp
+ * Interface to implement for Servers and Clients
  */
-public interface Connectable {
-
-    public void bind(String connectionURL);
-    public void send(Message m);
-    public Message recv();
-    public void close();
+public abstract class Connectable {
+    /**
+     * binds 
+     * @param connectionURL 
+     */
+    protected abstract void bind(String connectionURL);
+    /**
+     * sends message 
+     * @param m 
+     */
+    protected abstract void send(Message m);
+    /**
+     * receive message
+     * @return 
+     */
+    protected abstract Message recv();
+    /**
+     * close connection
+     */
+    protected abstract void close();
 }

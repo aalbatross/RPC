@@ -22,6 +22,6 @@ public class AppTCPServer {
         server.bind("tcp://localhost:5555");
         server.bindObject("home", new HomeServer(50,10), sc1);
         server.bindObject("hello", new HelloServer(), sc2);
-        server.start();
+        server.startServer();
     }
 }

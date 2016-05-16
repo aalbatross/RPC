@@ -7,14 +7,28 @@ package com.albatross.rpc.protocol;
 
 /**
  *
- * @author iamrp
+ * @author iamrp 
  * Defines a Method from Schema
  */
 public class Method {
+
     private String name;
     private String returntype;
     private String[] args;
 
+    public Method(){
+        
+    }
+    
+    public Method(String name, String returntype, String[] args) {
+        this.name = name;
+        this.returntype = returntype;
+        this.args = args;
+    }
+    /**
+     * gets name of method
+     * @return 
+     */
     public String getName() {
         return name;
     }
@@ -22,7 +36,10 @@ public class Method {
     public void setName(String name) {
         this.name = name;
     }
-
+    /**
+     * stringified type of the return object
+     * @return 
+     */
     public String getReturntype() {
         return returntype;
     }
@@ -30,7 +47,10 @@ public class Method {
     public void setReturntype(String returntype) {
         this.returntype = returntype;
     }
-
+    /**
+     * types of the object send as argument
+     * @return 
+     */
     public String[] getArgs() {
         return args;
     }
@@ -38,5 +58,5 @@ public class Method {
     public void setArgs(String[] args) {
         this.args = args;
     }
-    
+
 }

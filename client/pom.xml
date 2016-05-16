@@ -1,30 +1,37 @@
 <?xml version="1.0"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.albatross</groupId>
+        <artifactId>RPC</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </parent>
     <groupId>com.albatross</groupId>
-    <artifactId>RPC</artifactId>
+    <artifactId>rpc-client</artifactId>
     <version>1.0-SNAPSHOT</version>
-  </parent>
-  <groupId>com.albatross</groupId>
-  <artifactId>rpc-client</artifactId>
-  <version>1.0-SNAPSHOT</version>
-  <name>client</name>
-  <url>http://maven.apache.org</url>
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <dependencies>
+    <name>client</name>
+    <url>http://maven.apache.org</url>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+    <dependencies>
         <dependency>
             <groupId>org.zeromq</groupId>
             <artifactId>jeromq</artifactId>
             <version>0.3.5</version>
         </dependency>
+        <!-- http://mvnrepository.com/artifact/log4j/log4j -->
+        <dependency>
+            <groupId>log4j</groupId>
+            <artifactId>log4j</artifactId>
+            <version>1.2.17</version>
+        </dependency>
+
         <dependency>
             <groupId>com.albatross</groupId>
             <artifactId>rpc-protocol</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
-  </dependencies>
+    </dependencies>
 </project>

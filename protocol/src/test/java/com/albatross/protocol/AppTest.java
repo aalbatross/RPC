@@ -32,7 +32,7 @@ public class AppTest
     
     }
     
-    @Test
+    @Test(enabled=false)
     public void testMessage() throws IOException{
         //String result= JsonUtils.generateProtocolFromInterface(HelloService.class);
        //System.out.println(result);
@@ -42,5 +42,11 @@ public class AppTest
         
         Message m = new Message(UUID.randomUUID().toString(),"Lookup",readValue.getServicename(),Message.MSG_REQ,readValue.getMethods()[2].getName(),new Object[]{},null,new String[]{});
         System.out.println(mapper.writeValueAsString(m));
+    }
+    
+        @Test(enabled=true)
+        public void testMessage2() throws IOException, ClassNotFoundException{
+         Schema protocol=JsonUtils.generateProtocolFromInterface(HelloService.class);
+         JsonUtils.generateInterfaceFromProtocol(protocol);
     }
 }

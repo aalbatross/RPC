@@ -18,7 +18,11 @@ public class ProtocolDataTypeMap {
     public static final String PROTO_CHAR="char";
     public static final String PROTO_STRING="string";
     public static final String PROTO_BOOLEAN="boolean";
-    
+    /**
+     * converts java types to protocol data types
+     * @param clazz
+     * @return 
+     */
     public static String javaToProtoDataType(Class clazz){
         String jdt = clazz.getCanonicalName();
         String result = jdt;
@@ -37,7 +41,12 @@ public class ProtocolDataTypeMap {
             return PROTO_BOOLEAN;        
         return result;
     }
-    
+    /**
+     * converts protocol datatypes to java types
+     * @param proto
+     * @return
+     * @throws ClassNotFoundException 
+     */
     public static Class ProtoDataTypeToJava(String proto) throws ClassNotFoundException{
         String jdt = proto;
 
