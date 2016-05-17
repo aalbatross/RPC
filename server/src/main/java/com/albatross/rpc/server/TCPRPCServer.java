@@ -7,6 +7,7 @@ package com.albatross.rpc.server;
 
 import com.albatross.rpc.protocol.Message;
 import com.albatross.rpc.protocol.Schema;
+import com.albatross.rpc.protocol.excption.RPCException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -57,7 +58,7 @@ public class TCPRPCServer extends AbstractRPCServer {
             this.socket.send(response);
         } catch (JsonProcessingException ex) {
             logger.error(ex.getCause());
-            throw new RuntimeException("Error while sending:" + ex);
+            throw new RPCException("Error while sending:" + ex);
         }
     }
 
@@ -73,12 +74,12 @@ public class TCPRPCServer extends AbstractRPCServer {
             return req;
         } catch (IOException ex) {
             logger.error(ex.getCause().getMessage());
-            throw new RuntimeException("Error while receiving:" + ex);
+            throw new RPCException("Error while receiving:" + ex);
         }
 
     }
 
-    protected final void close() {
+    public final void close() {
         this.socket.close();
         this.ctx.term();
     }

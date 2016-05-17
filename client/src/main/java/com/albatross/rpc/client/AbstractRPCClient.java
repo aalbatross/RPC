@@ -7,6 +7,7 @@ package com.albatross.rpc.client;
 
 import com.albatross.rpc.protocol.Message;
 import com.albatross.rpc.protocol.Method;
+import com.albatross.rpc.protocol.ProtocolDataTypeMap;
 import com.albatross.rpc.protocol.Schema;
 import com.albatross.rpc.protocol.conn.Connectable;
 import com.albatross.rpc.protocol.excption.RPCException;
@@ -16,6 +17,7 @@ import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.UUID;
+import org.apache.log4j.Logger;
 
 /**
  *
@@ -25,7 +27,7 @@ public abstract class AbstractRPCClient extends Connectable {
 
     private LinkedHashMap<String, Schema> lookupSchemaMap;
     private ObjectMapper mapper;
-
+    private final static Logger logger = Logger.getLogger(AbstractRPCClient.class);
     public AbstractRPCClient() {
         lookupSchemaMap = new LinkedHashMap<String, Schema>();
         mapper = new ObjectMapper();
@@ -36,7 +38,10 @@ public abstract class AbstractRPCClient extends Connectable {
         return lookupSchemaMap;
     }
 
-    public void getAllServices() throws JsonProcessingException, IOException {
+    public void getAllServices()  {
+        try{
+        if(logger.isDebugEnabled())
+            logger.debug("getAllServices called");
         Message mreq = new Message(UUID.randomUUID().toString(), "", "", Message.MSG_REQ, "", new Object[]{}, null, new String[]{});
         Message mres = executeRequest(mreq);
         if (mres.getExceptions().length == 0) {
@@ -45,20 +50,24 @@ public abstract class AbstractRPCClient extends Connectable {
             for(Object key:keys){
                 String k1 = (String)key;
                 String json = mapper.writeValueAsString(map.get(key));
-                Schema v1 = mapper.readValue(json, Schema.class);
-                
+                Schema v1 = mapper.readValue(json, Schema.class);                
                 this.lookupSchemaMap.put(k1, v1);
             }
         }   
         else{
-            throw new RuntimeException(mapper.writeValueAsString(mres.getExceptions()));
+            throw new RPCException(mapper.writeValueAsString(mres.getExceptions()));
         }
-        
+        }
+        catch(Exception ex){
+            throw new RPCException(ex.getMessage());
+        }
     }
 
-    public Object call(String lookup, String methodName, Object[] args) throws JsonProcessingException, IOException, ClassNotFoundException {
+    public Object call(String lookup, String methodName, Object[] args){
+        try{
+        
         if (!this.lookupSchemaMap.containsKey(lookup)) {
-            throw new RuntimeException("Lookup not available");
+            throw new RPCException( RPCException.LOOK_UP_NOT_AVAILABLE);
         }
         
         Schema sc = this.lookupSchemaMap.get(lookup);
@@ -74,7 +83,7 @@ public abstract class AbstractRPCClient extends Connectable {
         if (call != null) {
             mreq.setMethodname(methodName);
         } else {
-            throw new RuntimeException(RPCException.METHOD_NOT_FOUND);
+            throw new RPCException(RPCException.METHOD_NOT_FOUND);
         }
         String[] strs = call.getArgs();
         /*if (strs.length != args.length) {
@@ -92,10 +101,13 @@ public abstract class AbstractRPCClient extends Connectable {
         mreq.setArgs(args);
         Message response = this.executeRequest(mreq);
         if (response.getExceptions().length > 0) {
-            throw new RuntimeException(mapper.writeValueAsString(response.getExceptions()));
+            throw new RPCException(mapper.writeValueAsString(response.getExceptions()));
         }
         return response.getResponse();
-
+        }
+        catch(Exception ex){
+            throw new RPCException("Error on calling remote method "+ex.getMessage());
+        }
     }
 
     public AbstractRPCClient(LinkedHashMap<String, Schema> lookupSchemaMap) {

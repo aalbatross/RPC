@@ -81,7 +81,8 @@ public abstract class AbstractRPCServer extends Connectable {
         return req;
     }
 
-    private Message getExecuteResponseImpl(Message req) throws IOException, ClassNotFoundException {
+    private Message getExecuteResponseImpl(Message req)  {
+        try{
         if(logger.isInfoEnabled())
             logger.info("Exexcuting from lookup "+req.getLookupName()+" of type Service"+ req.getServiceName()+" method "+ req.getMethodname());
         String lookup = req.getLookupName();
@@ -151,10 +152,14 @@ public abstract class AbstractRPCServer extends Connectable {
         }
         logger.debug("Successfully executed");
         return req;
-
+        }
+        catch(Exception ex){
+            throw new RPCException("Error while executing :"+ ex.getMessage());
+        }
     }
 
-    public Message processRequest(Message req) throws IOException, ClassNotFoundException {
+    public Message processRequest(Message req)  {
+        try{
         if (!req.getType().equals(Message.MSG_REQ)) {
             req.setType(Message.MSG_RES);
             req.setExceptions(new String[]{RPCException.MESSAGE_MUST_BE_REQ});
@@ -169,6 +174,10 @@ public abstract class AbstractRPCServer extends Connectable {
         req.setType(Message.MSG_RES);
         req.setExceptions(new String[]{RPCException.REQ_NOT_EXECUTED});
         return req;
+        }
+        catch(Exception ex){
+            throw new RPCException("Error while processing request "+ex.getMessage());
+        }
     }
 
     public void rebindObject(String lookup, Object obj, Schema schema) {
@@ -179,10 +188,12 @@ public abstract class AbstractRPCServer extends Connectable {
     public void startServer() {
         while (!Thread.currentThread().isInterrupted())
             try {
+                Thread.sleep(200);
                 process();
+                
             } catch (Exception ex) {
-                logger.error(ex.getCause());
-                System.err.println(ex.getMessage());
+                logger.error(ex.getMessage());
+                ex.printStackTrace();
             }
     }
 

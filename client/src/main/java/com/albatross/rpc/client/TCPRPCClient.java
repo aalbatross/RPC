@@ -6,19 +6,23 @@
 package com.albatross.rpc.client;
 
 import com.albatross.rpc.protocol.Message;
+import com.albatross.rpc.protocol.excption.RPCException;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
+import org.apache.log4j.Logger;
 import org.zeromq.ZMQ;
 
 /**
  *
  * @author iamrp
+ * TCP RPC client
  */
 public class TCPRPCClient extends AbstractRPCClient {
     
     private ZMQ.Socket socket;
     private ZMQ.Context ctx;
+    private final static Logger logger = Logger.getLogger(TCPRPCClient.class);
     
     public TCPRPCClient() {
         super();
@@ -29,29 +33,32 @@ public class TCPRPCClient extends AbstractRPCClient {
     
     public final void bind(String connectionURL) {
         this.socket.connect(connectionURL);
+        logger.info("Client started.. ready to connect");
     }
 
-    public final void send(Message m) {
+    protected final void send(Message m) {
         try {
             ObjectMapper mapper = new ObjectMapper();
             String response = mapper.writeValueAsString(m);
-            System.out.println("Request sent: " + response);
+            if(logger.isDebugEnabled())
+                logger.debug("Request sent: " + response);
             this.socket.send(response);
         } catch (JsonProcessingException ex) {
-            throw new RuntimeException(ex.getCause());
+            throw new RPCException("Error while sending: "+ex.getCause().getMessage());
         }
     }
 
-    public final Message recv() {
+    protected final Message recv() {
         try {
             String request = this.socket.recvStr();
-            System.out.println("Response received: " + request);
+            if(logger.isDebugEnabled())
+            logger.debug("Response received: " + request);
             ObjectMapper mapper = new ObjectMapper();
             Message req = mapper.readValue(request, Message.class);
             return req;
         } catch (IOException ex) {
             
-            throw new RuntimeException("Error while sending:" + ex);
+            throw new RPCException("Error while receiving:" + ex.getCause().getMessage());
         }
 
     }

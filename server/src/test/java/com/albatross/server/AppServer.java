@@ -5,21 +5,24 @@
  */
 package com.albatross.server;
 
-import com.albatross.rpc.server.TCPRPCServer;
 import com.albatross.rpc.protocol.JsonUtils;
 import com.albatross.rpc.protocol.Message;
 import com.albatross.rpc.protocol.Schema;
+import com.albatross.rpc.server.TCPRPCServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.UUID;
+import org.testng.annotations.BeforeClass;
 
 /**
  *
  * @author iamrp
  */
 public class AppServer {
-    
+   
     public static void main(String[] args) throws IOException{
+        
+    
         System.out.println(HelloService.class.isInterface());
         Schema sc= JsonUtils.generateProtocolFromInterface(HelloService.class);
         Message mreq = new Message(UUID.randomUUID().toString(), "hello", sc.getServicename(), Message.MSG_REQ, "printHello", new Object[]{"Hello World!!"}, null, new String[]{});
@@ -30,6 +33,8 @@ public class AppServer {
         //Message processRequest = server.processRequest(mreq);
         //System.out.println(mapper.writeValueAsString(processRequest));
         server.startServer();
+    
+    
     }
     
 }

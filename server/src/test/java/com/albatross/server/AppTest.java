@@ -3,9 +3,13 @@ package com.albatross.server;
 import com.albatross.rpc.protocol.JsonUtils;
 import com.albatross.rpc.protocol.Message;
 import com.albatross.rpc.protocol.Schema;
+import com.albatross.rpc.server.TCPRPCServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.UUID;
+import org.testng.Assert;
+import org.testng.annotations.AfterClass;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 import org.zeromq.ZMQ;
 
@@ -17,8 +21,10 @@ public class AppTest {
     /**
      * Rigourous Test :-)
      */
-    @Test(enabled = false)
-    public void testApp() throws IOException {
+    
+    
+    @Test(enabled = true)
+    public void testGetAllServices() throws IOException {
         //System.out.println(HelloService.class.isInterface());
         //Schema sc= JsonUtils.generateProtocolFromInterface(HelloService.class);
         Message mreq = new Message(UUID.randomUUID().toString(), "", "", Message.MSG_REQ, "", new Object[]{}, null, new String[]{});
@@ -32,11 +38,12 @@ public class AppTest {
         requester.send(mapper.writeValueAsString(mreq));
         String res = requester.recvStr();
         System.out.println(res);
-
+        Assert.assertNotNull(res);
+        requester.close();
     }
 
-    @Test(enabled=false)
-    public void testApp2() throws IOException {
+    @Test(enabled=true)
+    public void testCallSimpleRemoteMethodWithoutDependency() throws IOException {
         //System.out.println(HelloService.class.isInterface());
         Schema sc = JsonUtils.generateProtocolFromInterface(HelloService.class);
 
@@ -51,10 +58,12 @@ public class AppTest {
         requester.send(mapper.writeValueAsString(mreq));
         String res = requester.recvStr();
         System.out.println(res);
+        Assert.assertNotNull(res);
 
+        requester.close();
     }
     @Test
-        public void testApp3() throws IOException {
+        public void testCallRemoteMethodWithDependency() throws IOException {
         //System.out.println(HelloService.class.isInterface());
         Schema sc = JsonUtils.generateProtocolFromInterface(HelloService.class);
 
@@ -69,6 +78,8 @@ public class AppTest {
         requester.send(mapper.writeValueAsString(mreq));
         String res = requester.recvStr();
         System.out.println(res);
-
+        Assert.assertNotNull(res);
+        requester.close();
     }
+    
 }
