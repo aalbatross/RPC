@@ -31,5 +31,5 @@ public abstract class Connectable {
     /**
      * close connection
      */
-    protected abstract void close();
+    public abstract void close();
 }

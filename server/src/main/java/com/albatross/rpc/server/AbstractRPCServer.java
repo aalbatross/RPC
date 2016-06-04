@@ -30,19 +30,21 @@ public abstract class AbstractRPCServer extends Connectable {
 
     private static final Logger logger = Logger.getLogger(AbstractRPCServer.class);
     
-    public AbstractRPCServer() {
+    public AbstractRPCServer(String connectionURL) {
         objectLookup = new LinkedHashMap<String, Object>();
         lookupSchemaMap = new LinkedHashMap<String,Schema>();
         lookups = new TreeSet<String>();
+        this.bind(connectionURL);
         if(logger.isInfoEnabled()){
             logger.info("Abstract RPC Server started...");
         }
     }
 
-    public AbstractRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups) {
+    public AbstractRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups,String connectionURL) {
         this.objectLookup = objectLookup;
         this.lookupSchemaMap = lookupSchemaMap;
         this.lookups = lookups;
+        this.bind(connectionURL);
         if(logger.isInfoEnabled()){
             logger.info("Abstract RPC Server started...");
         }

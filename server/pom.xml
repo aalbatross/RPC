@@ -13,6 +13,7 @@
     <name>server</name>
     <url>http://maven.apache.org</url>
     <properties>
+        <lib.directory>${project.build.directory}/so</lib.directory>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <dependencies>
@@ -32,7 +33,17 @@
             <artifactId>log4j</artifactId>
             <version>1.2.17</version>
         </dependency>
-
+        <dependency>
+            <groupId>net.sf.bluecove</groupId>
+            <artifactId>bluecove</artifactId>
+            <version>2.1.0</version>
+        </dependency> 
+          <dependency>
+            <groupId>net.sf.bluecove</groupId>
+            <artifactId>bluecove-gpl</artifactId>
+            <version>2.1.0</version>
+            <scope>runtime</scope>
+        </dependency>
         <dependency>
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
@@ -41,4 +52,6 @@
             <type>jar</type>
         </dependency>
     </dependencies>
+    <build>
+    </build>
 </project>

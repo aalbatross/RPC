@@ -24,14 +24,14 @@ public class TCPRPCClient extends AbstractRPCClient {
     private ZMQ.Context ctx;
     private final static Logger logger = Logger.getLogger(TCPRPCClient.class);
     
-    public TCPRPCClient() {
-        super();
-        this.ctx = ZMQ.context(1);
-        this.socket = ctx.socket(ZMQ.REQ);
+    public TCPRPCClient(String connectionURL) {
+        super(connectionURL);
+        
     }
     
-    
-    public final void bind(String connectionURL) {
+    protected final void bind(String connectionURL) {
+        this.ctx = ZMQ.context(1);
+        this.socket = ctx.socket(ZMQ.REQ);
         this.socket.connect(connectionURL);
         logger.info("Client started.. ready to connect");
     }

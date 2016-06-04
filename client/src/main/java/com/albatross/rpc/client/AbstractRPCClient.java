@@ -7,13 +7,10 @@ package com.albatross.rpc.client;
 
 import com.albatross.rpc.protocol.Message;
 import com.albatross.rpc.protocol.Method;
-import com.albatross.rpc.protocol.ProtocolDataTypeMap;
 import com.albatross.rpc.protocol.Schema;
 import com.albatross.rpc.protocol.conn.Connectable;
 import com.albatross.rpc.protocol.excption.RPCException;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Set;
 import java.util.UUID;
@@ -24,14 +21,14 @@ import org.apache.log4j.Logger;
  * @author iamrp
  */
 public abstract class AbstractRPCClient extends Connectable {
-
+    
     private LinkedHashMap<String, Schema> lookupSchemaMap;
     private ObjectMapper mapper;
     private final static Logger logger = Logger.getLogger(AbstractRPCClient.class);
-    public AbstractRPCClient() {
+    public AbstractRPCClient(String connectionURL) {
         lookupSchemaMap = new LinkedHashMap<String, Schema>();
         mapper = new ObjectMapper();
-
+        this.bind(connectionURL);
     }
 
     public LinkedHashMap<String, Schema> getLookupSchemaMap() {
@@ -110,10 +107,10 @@ public abstract class AbstractRPCClient extends Connectable {
         }
     }
 
-    public AbstractRPCClient(LinkedHashMap<String, Schema> lookupSchemaMap) {
+    public AbstractRPCClient(LinkedHashMap<String, Schema> lookupSchemaMap,String connectionURL) {
         this.lookupSchemaMap = lookupSchemaMap;
         mapper = new ObjectMapper();
-
+        this.bind(connectionURL);
     }
 
     protected Message executeRequest(Message msg) {

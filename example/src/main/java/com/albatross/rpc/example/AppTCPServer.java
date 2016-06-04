@@ -18,8 +18,7 @@ public class AppTCPServer {
     public static void main(String[] args) throws IOException{
         Schema sc1=JsonUtils.generateProtocolFromInterface(HomeService.class);
         Schema sc2=JsonUtils.generateProtocolFromInterface(HelloService.class);
-        TCPRPCServer server = new TCPRPCServer();
-        server.bind("tcp://localhost:5555");
+        TCPRPCServer server = new TCPRPCServer("tcp://localhost:5555");
         server.bindObject("home", new HomeServer(50,10), sc1);
         server.bindObject("hello", new HelloServer(), sc2);
         server.startServer();

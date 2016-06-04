@@ -26,25 +26,23 @@ public class TCPRPCServer extends AbstractRPCServer {
 
     private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(AbstractRPCServer.class);
 
-    public TCPRPCServer() {
-        super();
-        this.ctx = ZMQ.context(1);
-        this.socket = ctx.socket(ZMQ.REP);
+    public TCPRPCServer(String connectionURL) {
+        super(connectionURL);
         if (logger.isInfoEnabled()) {
             logger.info("TCPRPC Server started");
         }
     }
 
-    public TCPRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups) {
-        super(objectLookup, lookupSchemaMap, lookups);
-        this.ctx = ZMQ.context(1);
-        this.socket = ctx.socket(ZMQ.REP);
+    public TCPRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups,String connectionURL) {
+        super(objectLookup, lookupSchemaMap, lookups,connectionURL);
         if (logger.isInfoEnabled()) {
             logger.info("TCPRPC Server started");
         }
     }
 
     public final void bind(String connectionURL) {
+        this.ctx = ZMQ.context(1);
+        this.socket = ctx.socket(ZMQ.REP);
         this.socket.bind(connectionURL);
     }
 
