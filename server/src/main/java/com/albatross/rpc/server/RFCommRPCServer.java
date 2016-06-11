@@ -15,6 +15,10 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.util.LinkedHashMap;
 import java.util.TreeSet;
+import java.util.logging.Level;
+import javax.bluetooth.BluetoothStateException;
+import javax.bluetooth.DiscoveryAgent;
+import javax.bluetooth.LocalDevice;
 import javax.bluetooth.RemoteDevice;
 import javax.bluetooth.UUID;
 import javax.microedition.io.Connector;
@@ -40,11 +44,21 @@ public class RFCommRPCServer extends AbstractRPCServer{
     public RFCommRPCServer(String connectionURL) {
         super(connectionURL);
         mapper = new ObjectMapper();
+        try {
+            LocalDevice.getLocalDevice().setDiscoverable(DiscoveryAgent.GIAC);
+        } catch (BluetoothStateException ex) {
+            ex.printStackTrace();
+        }
     }
 
     public RFCommRPCServer(LinkedHashMap<String, Object> objectLookup, LinkedHashMap<String, Schema> lookupSchemaMap, TreeSet<String> lookups,String connectionURL) {
         super(objectLookup, lookupSchemaMap, lookups, connectionURL);
         mapper = new ObjectMapper();
+        try {
+            LocalDevice.getLocalDevice().setDiscoverable(DiscoveryAgent.GIAC);
+        } catch (BluetoothStateException ex) {
+            ex.printStackTrace();
+        }
     }
     /**
      * 

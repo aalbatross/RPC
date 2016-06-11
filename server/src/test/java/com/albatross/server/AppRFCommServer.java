@@ -9,7 +9,6 @@ import com.albatross.rpc.protocol.JsonUtils;
 import com.albatross.rpc.protocol.Message;
 import com.albatross.rpc.protocol.Schema;
 import com.albatross.rpc.server.RFCommRPCServer;
-import com.albatross.rpc.server.TCPRPCServer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.UUID;
@@ -29,8 +28,8 @@ public class AppRFCommServer {
         //no need to provide it binds automatically
         RFCommRPCServer server = new RFCommRPCServer("");
         server.bindObject("hello", new HelloServer(),sc );
-        //Message processRequest = server.processRequest(mreq);
-        //System.out.println(mapper.writeValueAsString(processRequest));
+        Message processRequest = server.processRequest(mreq);
+        System.out.println(mapper.writeValueAsString(processRequest));
         server.startServer();
     
     
