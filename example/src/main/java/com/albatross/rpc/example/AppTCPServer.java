@@ -15,7 +15,7 @@ import java.io.IOException;
  * @author iamrp
  */
 public class AppTCPServer {
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws Exception{
         Schema sc1=JsonUtils.generateProtocolFromInterface(HomeService.class);
         Schema sc2=JsonUtils.generateProtocolFromInterface(HelloService.class);
         TCPRPCServer server = new TCPRPCServer("tcp://localhost:5555");

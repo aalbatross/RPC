@@ -21,9 +21,9 @@ import org.zeromq.ZMQ;
  */
 public class TCPRPCServer extends AbstractRPCServer {
 
-    ZMQ.Socket socket;
-    ZMQ.Context ctx;
-
+    private ZMQ.Socket socket;
+    private ZMQ.Context ctx;
+    private String connectionURL;
     private static final org.apache.log4j.Logger logger = org.apache.log4j.Logger.getLogger(AbstractRPCServer.class);
 
     public TCPRPCServer(String connectionURL) {
@@ -44,6 +44,7 @@ public class TCPRPCServer extends AbstractRPCServer {
         this.ctx = ZMQ.context(1);
         this.socket = ctx.socket(ZMQ.REP);
         this.socket.bind(connectionURL);
+        this.connectionURL = connectionURL;
     }
 
     protected final void send(Message m) {
@@ -55,7 +56,6 @@ public class TCPRPCServer extends AbstractRPCServer {
             }
             this.socket.send(response);
         } catch (JsonProcessingException ex) {
-            logger.error(ex.getCause());
             throw new RPCException("Error while sending:" + ex);
         }
     }
@@ -71,7 +71,6 @@ public class TCPRPCServer extends AbstractRPCServer {
             Message req = mapper.readValue(request, Message.class);
             return req;
         } catch (IOException ex) {
-            logger.error(ex.getCause().getMessage());
             throw new RPCException("Error while receiving:" + ex);
         }
 

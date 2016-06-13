@@ -18,7 +18,7 @@ import java.util.UUID;
  * @author iamrp
  */
 public class AppRFCommServer {
-    public static void main(String[] args) throws IOException{
+    public static void main(String[] args) throws Exception{
         
     
         System.out.println(HelloService.class.isInterface());
