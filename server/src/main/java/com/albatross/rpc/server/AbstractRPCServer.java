@@ -185,16 +185,11 @@ public abstract class AbstractRPCServer extends Connectable {
     }
 
     
-    public void startServer() {
-        while (!Thread.currentThread().isInterrupted())
-            try {
-                Thread.sleep(200);
+    public void startServer() throws Exception {
+        while (!Thread.currentThread().isInterrupted()){
                 process();
-                
-            } catch (Exception ex) {
-                logger.error(ex.getMessage());
-                ex.printStackTrace();
-            }
+        }
+        this.close();
     }
 
     private void process() throws IOException, ClassNotFoundException {

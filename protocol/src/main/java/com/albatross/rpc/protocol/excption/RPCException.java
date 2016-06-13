@@ -6,7 +6,6 @@
 package com.albatross.rpc.protocol.excption;
 
 import com.albatross.rpc.protocol.Message;
-import java.io.IOException;
 
 /**
  *

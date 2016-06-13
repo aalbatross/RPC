@@ -6,11 +6,14 @@
 package com.albatross.server;
 
 import java.lang.reflect.Method;
+import junit.framework.Assert;
 import org.testng.annotations.Test;
 
 /**
  *
  * @author iamrp
+ * 
+ * Reflection test 
  */
 public class HelloTest {
     @Test
@@ -20,8 +23,9 @@ public class HelloTest {
         
         System.out.println("Class: "+obj.getClass());
         Method m=obj.getClass().getMethod("printHello",String.class );
-        m.invoke(obj, "Hello World!!");
+        Object invoke = m.invoke(obj, "Hello World!!");
+        Assert.assertNull(invoke);
         System.out.println(m.getReturnType().equals(void.class));
-        
+        Assert.assertEquals(void.class, m.getReturnType());
     }
 }
