@@ -20,7 +20,7 @@ public class HelloServer implements HelloService {
     }
 
     public Sample saySample() {
-        return new Sample(25,"sasma");
+        return new Sample(25,"Hello RPC World");
     }
 
     public TSample saySample(Sample s) {

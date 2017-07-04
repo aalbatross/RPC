@@ -186,6 +186,7 @@ public abstract class AbstractRPCServer extends Connectable {
 
     
     public void startServer() throws Exception {
+    	logger.info("RPC Server started...");
         while (!Thread.currentThread().isInterrupted()){
                 process();
         }

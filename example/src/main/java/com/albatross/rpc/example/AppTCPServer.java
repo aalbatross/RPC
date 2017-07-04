@@ -8,7 +8,6 @@ package com.albatross.rpc.example;
 import com.albatross.rpc.protocol.JsonUtils;
 import com.albatross.rpc.protocol.Schema;
 import com.albatross.rpc.server.TCPRPCServer;
-import java.io.IOException;
 
 /**
  *

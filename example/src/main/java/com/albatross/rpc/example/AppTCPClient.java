@@ -15,11 +15,11 @@ public class AppTCPClient
         client.getAllServices();
         //System.out.println(client.getLookupSchemaMap());
         Object obj1= client.call("home", "switchOnTV", new Object[]{8});
-        System.out.println(obj1+"  "+obj1.getClass());
+        System.out.println("Server says: TV switched on: "+obj1);
         Object obj2=client.call("hello", "saySample", new Object[]{});
-        System.out.println(obj2+"  "+obj2.getClass());
-        Object obj3= client.call("hello", "saySample", new Object[]{new HelloService.Sample(33, "asasdsda")});
-        System.out.println(obj3+"  "+obj3.getClass());
+        System.out.println("Server says: "+obj2);
+        Object obj3= client.call("hello", "saySample", new Object[]{new HelloService.Sample(33, "I am Service with dependent class demo")});
+        System.out.println("Server says: "+obj3);
         client.close();
     }
 }
